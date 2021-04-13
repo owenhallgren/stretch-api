@@ -2,6 +2,7 @@
 exports.up = function(knex) {
   return knex.schema
     .createTable('reviews', function(table) {
+      table.increments('id').primary();
       table.string('username');
       table.string('summary');
       table.string('email');
@@ -10,7 +11,6 @@ exports.up = function(knex) {
       table.string('repo');
       table.string('status');
       table.string('reviewer')
-      table.integer('id')
     })
 };
 

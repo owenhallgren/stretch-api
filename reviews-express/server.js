@@ -1,16 +1,18 @@
 const express = require('express');
-const { default: knex } = require('knex');
 const app = express();
-// const cors = require('cors');
-// app.use(cors());
+const { default: knex } = require('knex');
+// const knex = require('./db/knex.js');
+const cors = require('cors');
 app.use(express.json());
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('../knexfile.js')[environment];
 const database = require('knex')(configuration);
 
-app.set('port', process.env.PORT || 3001);
+app.set('port', process.env.PORT || 3002);
 app.locals.title = 'Reviews';
+
+app.use(cors());
 
 app.get('/api/v1/reviews', async (request, response) => {
   try {
@@ -34,17 +36,19 @@ app.get('/api/v1/reviews', async (request, response) => {
 //     response.status(500).json({ error: 'ceral' })
 //   }
  
-// })
+// })npm
 
-app.put('/api/v1/reviews/update/:id', (req, res) => {
+app.put('/api/v1/reviews/cancel/:id', (req, res) => {
+    
     // console.log(req.body)
     // const { id, name, year, house, mobile, email, occupation, gender} = req.body
     const { id } = req.params
     
         database('reviews')
         .where('id', '=', id)
-        .update({email: 'Ceral'})
-        .then(data => res.status(200).json('Success'))
+        .update({reviewer: '', status: ''})
+        .then(() => database('reviews').select())
+        .then(data => res.status(200).json(data))
         .catch(err => console.log('Error', err));
 })
 

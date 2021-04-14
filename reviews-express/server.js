@@ -9,7 +9,7 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('../knexfile.js')[environment];
 const database = require('knex')(configuration);
 
-app.set('port', process.env.PORT || 3002);
+app.set('port', process.env.PORT || 3003);
 app.locals.title = 'Reviews';
 
 app.use(cors());
@@ -39,9 +39,6 @@ app.get('/api/v1/reviews', async (request, response) => {
 // })npm
 
 app.put('/api/v1/reviews/cancel/:id', (req, res) => {
-    
-    // console.log(req.body)
-    // const { id, name, year, house, mobile, email, occupation, gender} = req.body
     const { id } = req.params
     
         database('reviews')
@@ -52,10 +49,44 @@ app.put('/api/v1/reviews/cancel/:id', (req, res) => {
         .catch(err => console.log('Error', err));
 })
 
+app.put('/api/v1/reviews/undo/:id', (req, res) => {
+    const { id } = req.params
+    
+        database('reviews')
+        .where('id', '=', id)
+        .update({status: 'active'})
+        .then(() => database('reviews').select())
+        .then(data => res.status(200).json(data))
+        .catch(err => console.log('Error', err));
+})
+
+app.put('/api/v1/reviews/complete/:id', (req, res) => {
+    const { id } = req.params
+    
+        database('reviews')
+        .where('id', '=', id)
+        .update({status: 'complete'})
+        .then(() => database('reviews').select())
+        .then(data => res.status(200).json(data))
+        .catch(err => console.log('Error', err));
+})
+
+app.put('/api/v1/reviews/accept/:id/:user', (req, res) => {
+    const { id } = req.params
+    const { user } = req.params    
+        database('reviews')
+        .where('id', '=', id)
+        .update({reviewer: user, status: 'active'})
+        .then(() => database('reviews').select())
+        .then(data => res.status(200).json(data))
+        .catch(err => console.log('Error', err));
+})
+
+
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on http://localhost:${app.get('port')}.`);
 });
-
 
 
 // //PUT request:  CANCEL button

@@ -7,7 +7,11 @@ Clone this repo down
 
 2. `npm i`
 
-3. `cd reviews-express`
+4. knex migrate:latest
 
-4. `node server.js`
+5. knex seed: run
+
+6. `cd reviews-express`
+
+7. `node server.js`
 

@@ -3,6 +3,7 @@ const app = express();
 const { default: knex } = require('knex');
 // const knex = require('./db/knex.js');
 const cors = require('cors');
+const { response } = require('express');
 app.use(express.json());
 
 const environment = process.env.NODE_ENV || 'development';
@@ -81,6 +82,30 @@ app.put('/api/v1/reviews/accept/:id/:user', (req, res) => {
         .then(data => res.status(200).json(data))
         .catch(err => console.log('Error', err));
 })
+
+app.post('/api/v1/reviews', async (req, res) => {
+  const review = req.body;
+  try {
+    const responseArr = await database('reviews').insert(review, ['id']);
+    const newReview = await database('reviews').where('id', responseArr[0].id)
+    return res.status(200).json(newReview) 
+  } catch (err) {
+  res.status(500).json( {err} )
+  }
+
+})
+
+// app.post('/messages', async (req, res) => {
+//   try {
+//     const message = await knex('messages').insert({
+//       message: req.body.message,
+//       user_name: req.body.user_name
+//     }, 'message')
+//     res.status(201).json( { message } )
+//   } catch (error) {
+//     res.status(500).json( { error } )
+//   }
+// })
 
 
 

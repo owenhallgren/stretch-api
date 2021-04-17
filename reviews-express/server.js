@@ -95,6 +95,18 @@ app.post('/api/v1/reviews', async (req, res) => {
 
 })
 
+app.delete('/api/v1/reviews/:id', (req, res) => {
+  const { id } = req.params
+
+  database('reviews')
+  .where('id', '=', id)
+  .del()
+  .then(() => database('reviews').select())
+  .then(data => res.status(200).json(data))
+  .catch(err => console.log('Error', err));
+
+})
+
 // app.post('/messages', async (req, res) => {
 //   try {
 //     const message = await knex('messages').insert({

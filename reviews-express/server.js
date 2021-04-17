@@ -24,6 +24,15 @@ app.get('/api/v1/reviews', async (request, response) => {
   }
 })
 
+app.get('/api/v1/users', async (request, response) => {
+  try {
+    const users = await database('users').select();
+    response.status(200).json(users)
+  } catch(error) {
+    response.status(500).json({ error });
+  }
+})
+
 // app.put('/api/v1/reviews/:id', async (request, response) => {
 //   try {
 //      const { id } = request.params

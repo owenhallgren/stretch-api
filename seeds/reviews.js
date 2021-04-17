@@ -1,4 +1,5 @@
 const reviewData = require ('../reviewdata')
+const userData = require ('../userdata')
 // exports.seed = function(knex) {
 //   // Deletes ALL existing entries
 //   return knex('table_name').del()
@@ -29,17 +30,11 @@ const reviewData = require ('../reviewdata')
 
 exports.seed = async function (knex) {
   try {
+    await knex('users').del()
     await knex('reviews').del() // delete all footnotes first
-    console.log('test')
-  
-    // Now that we have a clean slate, we can re-insert our paper data
-    // Insert a single paper, return the paper ID, insert 2 footnotes
-    await knex('reviews').insert( reviewData
-    //  reviewData.map(review => {
-    //  return review 
-      
-    // })
-    )
+    
+    await knex('reviews').insert(reviewData)
+    await knex('users').insert(userData)
     
   } catch (error) {
     console.log(`Error seeding data: ${error}`);

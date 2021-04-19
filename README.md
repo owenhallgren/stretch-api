@@ -22,9 +22,11 @@ psql -d postgres -U <username>
 CREATE DATABASE reviews; 
 ```
 #### Clone the repo
-1. `cd stretch-api`
+1. `git clone git@github.com:owenhallgren/stretch-api.git`
 
-2. `npm i`
+2. `cd stretch-api`
+
+3. `npm i`
 
 ### Run the following in terminal 
 knex migrate:latest

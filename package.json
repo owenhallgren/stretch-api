@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@sendgrid/mail": "^7.4.2",
     "knex": "^0.95.4",
     "pg": "^8.5.1"
   }

@@ -38,65 +38,68 @@ app.post('/api/v1/email', (req, res) => {
 
   const review = req.body;
 
-   let message = {
-      to: review.email,
-      from: 'PairedPear@gmail.com',
-      subject: `Your review on Pear has been ${review.type}`,
-      text:`Hi ${review.user}! ${review.username} has ${review.type} your review! If you wish to get in touch you can contact them at ${review.reviewerEmail}. You will be notified when any update has been made to your review`
-    }
+  let message = {
+    to: review.email,
+    from: 'PairedPear@gmail.com',
+    subject: `Your review on Pear has been ${review.type}`,
+    text:`Hi ${review.user}! ${review.username} has ${review.type} your review! If you wish to get in touch you can 
+    contact them at ${review.reviewerEmail}. You will be notified when any update has been made to your review`
+  }
    
     
-    sgMail.send(message)
-    .then(() => res.status(200).json({status: 'ok'}))
-    .catch(err => console.log('Error', err))
+  sgMail.send(message)
+  .then(() => res.status(200).json({status: 'ok'}))
+  .catch(err => console.log('Error', err))
 })
 
 app.put('/api/v1/reviews/cancel/:id', (req, res) => {
-    const { id } = req.params
+  const { id } = req.params
     
-        database('reviews')
-        .where('id', '=', id)
-        .update({reviewer: '', status: ''})
-        .then(() => database('reviews').select())
-        .then(data => res.status(200).json(data))
-        .catch(err => console.log('Error', err));
+  database('reviews')
+  .where('id', '=', id)
+  .update({reviewer: '', status: ''})
+  .then(() => database('reviews').select())
+  .then(data => res.status(200).json(data))
+  .catch(err => console.log('Error', err));
 })
 
 app.put('/api/v1/reviews/undo/:id', (req, res) => {
-    const { id } = req.params
+  const { id } = req.params
     
-        database('reviews')
-        .where('id', '=', id)
-        .update({status: 'active'})
-        .then(() => database('reviews').select())
-        .then(data => res.status(200).json(data))
-        .catch(err => console.log('Error', err));
+  database('reviews')
+  .where('id', '=', id)
+  .update({status: 'active'})
+  .then(() => database('reviews').select())
+  .then(data => res.status(200).json(data))
+  .catch(err => console.log('Error', err));
 })
 
 app.put('/api/v1/reviews/complete/:id', (req, res) => {
-    const { id } = req.params
+  const { id } = req.params
     
-        database('reviews')
-        .where('id', '=', id)
-        .update({status: 'complete'})
-        .then(() => database('reviews').select())
-        .then(data => res.status(200).json(data))
-        .catch(err => console.log('Error', err));
+  database('reviews')
+  .where('id', '=', id)
+  .update({status: 'complete'})
+  .then(() => database('reviews').select())
+  .then(data => res.status(200).json(data))
+  .catch(err => console.log('Error', err));
 })
 
 app.put('/api/v1/reviews/accept/:id/:user', (req, res) => {
-    const { id } = req.params
-    const { user } = req.params    
-        database('reviews')
-        .where('id', '=', id)
-        .update({reviewer: user, status: 'active'})
-        .then(() => database('reviews').select())
-        .then(data => res.status(200).json(data))
-        .catch(err => console.log('Error', err));
+  const { id } = req.params
+  const { user } = req.params    
+
+  database('reviews')
+  .where('id', '=', id)
+  .update({reviewer: user, status: 'active'})
+  .then(() => database('reviews').select())
+  .then(data => res.status(200).json(data))
+  .catch(err => console.log('Error', err));
 })
 
 app.post('/api/v1/reviews', async (req, res) => {
   const review = req.body;
+
   try {
     const responseArr = await database('reviews').insert(review, ['id']);
     const newReview = await database('reviews').where('id', responseArr[0].id)

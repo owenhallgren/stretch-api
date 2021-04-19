@@ -40,7 +40,7 @@ app.post('/api/v1/email', (req, res) => {
 
   let message = {
     to: review.email,
-    from: 'PairedPear@gmail.com',
+    from: 'PearPaired@gmail.com',
     subject: `Your review on Pear has been ${review.type}`,
     text:`Hi ${review.user}! ${review.username} has ${review.type} your review! If you wish to get in touch you can 
     contact them at ${review.reviewerEmail}. You will be notified when any update has been made to your review`

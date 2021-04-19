@@ -1,4 +1,4 @@
 
 module.exports = {
-  key: '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'
+  key: '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'
 }
